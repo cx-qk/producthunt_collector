@@ -4,13 +4,13 @@
     {
       "id": 1,
       "prompt": "$producthunt-trend-analyzer 分析今天 Product Hunt 爬下来的数据，告诉我这些产品主要解决什么问题，以及有没有明显的功能缺口。",
-      "expected_output": "如果今天有数据，则读取今天的本地 JSON，生成 producthunt_site_catalog_YYYY-MM-DD.md 和 producthunt_trend_conclusions_YYYY-MM-DD.md 两份报告文件，并且不调用 Product Hunt API。",
+      "expected_output": "如果今天有数据，则读取今天的本地 JSON，生成 producthunt_site_catalog_YYYY-MM-DD.md 和 producthunt_trend_conclusions_YYYY-MM-DD.md 两份报告文件，并且不调用 Product Hunt API；产品/网站清单报告必须包含每个产品的 website_url 产品链接。",
       "files": []
     },
     {
       "id": 2,
       "prompt": "$producthunt-trend-analyzer 分析 2026-05-20 的数据，重点看正面词、负面词，以及评论里有没有很多人希望增加某个功能。",
-      "expected_output": "只分析 2026-05-20 的数据，生成产品/网站清单报告和趋势结论报告两份 Markdown 文件；如果没有评论正文，必须明确说明，并且不能编造评论。",
+      "expected_output": "只分析 2026-05-20 的数据，生成产品/网站清单报告和趋势结论报告两份 Markdown 文件；产品清单含 website_url 产品链接；如果没有评论正文，必须明确说明，并且不能编造评论。",
       "files": []
     },
     {

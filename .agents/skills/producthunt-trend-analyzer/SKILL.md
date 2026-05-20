@@ -79,9 +79,9 @@ python scripts/prepare_trend_inputs.py --project-root <repo-root> --date YYYY-MM
 第一份报告回答“有哪些产品/网站，它们分别做什么”：
 
 1. 每个产品一行或一小节，不要写成抽象趋势。
-2. 必须包含产品名称、票数、评论数、话题、面向对象、核心功能、解决的问题、可能的使用场景。
-3. 只根据本地 JSON 的 `name`、`tagline`、`description`、`topics`、`votes_count`、`comments_count` 和评论样本判断，不要补查官网，不要编造没出现的功能。
-4. 不要展示网址列，也不要展示 `website_url`。
+2. 必须包含产品名称、产品链接、票数、评论数、话题、面向对象、核心功能、解决的问题、可能的使用场景。
+3. 产品链接使用原始 JSON 的 `website_url` 字段，让用户可以直接点击打开；不要在清单报告里展示 `producthunt_url`。
+4. 只根据本地 JSON 的 `name`、`tagline`、`description`、`topics`、`votes_count`、`comments_count`、`website_url` 和评论样本判断，不要补查官网，不要编造没出现的功能。
 
 第二份报告回答“我能从这些产品里得出什么结论”：
 
@@ -113,9 +113,9 @@ python scripts/prepare_trend_inputs.py --project-root <repo-root> --date YYYY-MM
 
 ## 数据范围
 ## 产品总览表
-<!-- 表格至少包含：编号、产品名、票数、评论数、话题、它是做什么的、面向对象。不要在报告里展示网址列。 -->
+<!-- 表格至少包含：编号、产品名、产品链接、票数、评论数、话题、它是做什么的、面向对象。产品链接用 website_url，不要展示 producthunt_url。 -->
 ## 逐个产品说明
-<!-- 每个产品用 4-6 句说清楚核心功能、解决的问题、使用场景、从评论中看到的线索。 -->
+<!-- 每个产品用 4-6 句说清楚核心功能、解决的问题、使用场景、从评论中看到的线索，并在标题下单独放一行“产品链接：<website_url>”。 -->
 ## 备注与限制
 ```
 
@@ -136,6 +136,8 @@ python scripts/prepare_trend_inputs.py --project-root <repo-root> --date YYYY-MM
 ```
 
 报告要实用，所有判断尽量关联到具体产品名称、重复出现的表达、评论样本或票数/评论数信号。
+
+趋势结论报告不要展示产品链接，避免结论报告变成长表格。
 
 如果没有评论字段，把“正面信号”和“负面信号”明确标注为“基于标题、简介、描述和话题字段”，不要写成“用户评论显示”。
 

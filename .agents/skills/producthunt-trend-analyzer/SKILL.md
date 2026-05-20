@@ -80,6 +80,8 @@ python scripts/prepare_trend_inputs.py --project-root <repo-root> --date YYYY-MM
 5. 负面高频词或高频短语。
 6. 功能诉求，特别关注类似“wish it had X”“would be better if”“missing”“needs”“要是有 XX 功能就好了”的表达。
 
+报告必须把每个产品的目标网站 URL 写出来。优先使用原始 JSON 的 `website_url` 字段；如果 `website_url` 为空，再使用 `producthunt_url`。不要只写产品名而省略链接。
+
 采集器现在会尽量为每个产品抓取少量高赞评论。如果数据里没有评论，必须明确说明，并基于 `tagline`、`description`、`topics` 等已有字段做文本分析。不要编造用户评论。
 
 ## 报告格式
@@ -98,6 +100,7 @@ python scripts/prepare_trend_inputs.py --project-root <repo-root> --date YYYY-MM
 # Product Hunt 趋势报告 - YYYY-MM-DD
 
 ## 数据范围
+<!-- 在数据范围里放一张产品索引表，至少包含：编号、产品名、目标网站 URL、Product Hunt URL、票数、评论数、主要字段依据。 -->
 ## 主要解决的问题
 ## 需求分组
 ## 正面信号
@@ -107,7 +110,7 @@ python scripts/prepare_trend_inputs.py --project-root <repo-root> --date YYYY-MM
 ## 备注与限制
 ```
 
-报告要实用，所有判断尽量关联到具体产品名称或源数据中反复出现的表达。
+报告要实用，所有判断尽量关联到具体产品名称、目标网站 URL 或源数据中反复出现的表达。
 
 如果没有评论字段，把“正面信号”和“负面信号”明确标注为“基于标题、简介、描述和话题字段”，不要写成“用户评论显示”。
 

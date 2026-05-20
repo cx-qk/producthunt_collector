@@ -1,0 +1,17 @@
+{
+  "topics": [
+    "developer-tools",
+    "productivity"
+  ],
+  "days": 30,
+  "min_votes": 500,
+  "limit": 20,
+  "page_size": 20,
+  "timeout": 30,
+  "out_dir": "data",
+  "output_prefix": "producthunt_products",
+  "collect_comments": true,
+  "comments_per_product": 5,
+  "wait_on_rate_limit": false,
+  "resume": true
+}

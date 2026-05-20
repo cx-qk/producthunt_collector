@@ -1,0 +1,10 @@
+[project]
+name = "producthunt-collector"
+version = "0.1.0"
+description = "Collect recent Product Hunt products by topic and vote count."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "python-dotenv>=1.0.1",
+    "requests>=2.32.0",
+]

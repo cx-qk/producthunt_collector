@@ -1,11 +1,14 @@
 ---
 name: producthunt-trend-analyzer
-description: Manually analyze locally collected producthunt_collector Product Hunt data and produce a dated Markdown report covering product-demand trends, solved problems, positive and negative high-frequency terms, and repeated feature requests. Use only when the user explicitly invokes this skill or clearly asks to analyze existing Product Hunt collector output; do not trigger automatically while collecting data, configuring the crawler, or chatting generally.
+description: Manually analyze locally collected producthunt_collector Product Hunt data and produce two dated Markdown reports: a concrete product/site catalog explaining what each product does, and a separate conclusion report with sharp trend, opportunity, and gap judgments. Use only when the user explicitly invokes this skill or clearly asks to analyze existing Product Hunt collector output; do not trigger automatically while collecting data, configuring the crawler, or chatting generally.
 ---
 
 # Product Hunt 趋势分析器
 
-这个技能用于分析 `producthunt_collector` 已经爬取到本地的 Product Hunt 数据。它不调用 Product Hunt API，也不启动爬虫，只读取本地 JSON 输出，并最终生成一份 Markdown 趋势报告文件。
+这个技能用于分析 `producthunt_collector` 已经爬取到本地的 Product Hunt 数据。它不调用 Product Hunt API，也不启动爬虫，只读取本地 JSON 输出，并最终生成两份 Markdown 报告文件：
+
+1. 产品/网站清单报告：逐个列出这些产品分别是做什么的。
+2. 趋势结论报告：只写更明确的趋势、机会、缺口和取舍判断。
 
 ## 触发规则
 
@@ -67,48 +70,72 @@ python scripts/prepare_trend_inputs.py --project-root <repo-root> --date YYYY-MM
 
 `producthunt_collector/data/YYYY-MM-DD/trend_prep_YYYY-MM-DD.json`
 
-报告应同时参考原始产品 JSON 和这个预分析 JSON。预分析 JSON 用来提供产品数、topic 分布、词频、正面词、负面词、功能诉求片段和是否存在评论正文等基础证据。
+报告应同时参考原始产品 JSON 和这个预分析 JSON。预分析 JSON 用来提供产品数、产品摘要、topic 分布、词频、正面词、负面词、功能诉求片段和是否存在评论正文等基础证据。
 
 ## 分析要求
 
-读取产品记录后，输出以下分析：
+读取产品记录后，输出两类内容，但必须拆成两个文件，不要混成一份大报告。
 
-1. 这些产品主要在解决什么问题。
+第一份报告回答“有哪些产品/网站，它们分别做什么”：
+
+1. 每个产品一行或一小节，不要写成抽象趋势。
+2. 必须包含产品名称、票数、评论数、话题、面向对象、核心功能、解决的问题、可能的使用场景。
+3. 只根据本地 JSON 的 `name`、`tagline`、`description`、`topics`、`votes_count`、`comments_count` 和评论样本判断，不要补查官网，不要编造没出现的功能。
+4. 不要展示网址列，也不要展示 `website_url`。
+
+第二份报告回答“我能从这些产品里得出什么结论”：
+
+1. 这些产品主要在解决什么明确问题。
 2. 明显的需求分组或产品类别。
-3. 值得关注的产品机会。
-4. 正面高频词或高频短语。
-5. 负面高频词或高频短语。
-6. 功能诉求，特别关注类似“wish it had X”“would be better if”“missing”“needs”“要是有 XX 功能就好了”的表达。
+3. 值得关注的产品机会，必须写成具体可执行方向。
+4. 正面高频词或高频短语代表什么需求，不要只罗列词频。
+5. 负面高频词或高频短语代表什么风险，不要只罗列词频。
+6. 功能诉求和缺口，特别关注类似“wish it had X”“would be better if”“missing”“needs”“要是有 XX 功能就好了”的表达。
+7. 明确写出“可以做什么”“不建议做什么”“为什么现在有机会”，避免泛泛地说 AI、效率、自动化。
 
 采集器现在会尽量为每个产品抓取少量高赞评论。如果数据里没有评论，必须明确说明，并基于 `tagline`、`description`、`topics` 等已有字段做文本分析。不要编造用户评论。
 
 ## 报告格式
 
-最终产物必须是一份报告文件，而不是只在对话里回答。默认把报告写到对应日期目录：
+最终产物必须是两份报告文件，而不是只在对话里回答。默认把报告写到对应日期目录：
 
-`producthunt_collector/data/YYYY-MM-DD/producthunt_trend_report_YYYY-MM-DD.md`
+1. `producthunt_collector/data/YYYY-MM-DD/producthunt_site_catalog_YYYY-MM-DD.md`
+2. `producthunt_collector/data/YYYY-MM-DD/producthunt_trend_conclusions_YYYY-MM-DD.md`
 
 如果同名报告已经存在，可以覆盖更新，因为报告应该反映当前日期文件里的最新累计数据。
 
-对话回复中只需要简短说明报告路径和 3-5 条关键结论。
+对话回复中只需要简短说明两个报告路径和 3-5 条最重要结论。
 
-报告文件必须使用中文撰写，并始终使用这个结构：
+产品/网站清单报告必须使用中文撰写，并始终使用这个结构：
 
 ```markdown
-# Product Hunt 趋势报告 - YYYY-MM-DD
+# Product Hunt 产品/网站清单 - YYYY-MM-DD
 
 ## 数据范围
-<!-- 在数据范围里放一张产品索引表，至少包含：编号、产品名、票数、评论数、主要字段依据。不要在报告里展示网址列。 -->
-## 主要解决的问题
-## 需求分组
-## 正面信号
-## 负面信号
-## 功能诉求与缺口
-## 产品机会
+## 产品总览表
+<!-- 表格至少包含：编号、产品名、票数、评论数、话题、它是做什么的、面向对象。不要在报告里展示网址列。 -->
+## 逐个产品说明
+<!-- 每个产品用 4-6 句说清楚核心功能、解决的问题、使用场景、从评论中看到的线索。 -->
 ## 备注与限制
 ```
 
-报告要实用，所有判断尽量关联到具体产品名称或源数据中反复出现的表达。
+趋势结论报告必须使用中文撰写，并始终使用这个结构：
+
+```markdown
+# Product Hunt 趋势结论 - YYYY-MM-DD
+
+## 结论摘要
+<!-- 直接列 5-8 条判断，每条要具体，避免空泛。 -->
+## 需求分组与证据
+## 可以做的产品机会
+## 不建议做的方向
+## 正面信号
+## 负面信号
+## 功能诉求与缺口
+## 备注与限制
+```
+
+报告要实用，所有判断尽量关联到具体产品名称、重复出现的表达、评论样本或票数/评论数信号。
 
 如果没有评论字段，把“正面信号”和“负面信号”明确标注为“基于标题、简介、描述和话题字段”，不要写成“用户评论显示”。
 
